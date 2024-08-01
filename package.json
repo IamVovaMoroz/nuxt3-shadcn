@@ -22,6 +22,8 @@
     "vue": "latest"
   },
   "devDependencies": {
+    "@iconify-json/clarity": "^1.1.13",
+    "@iconify-json/fluent-mdl2": "^1.1.7",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "typescript": "^5.5.4"
   }
