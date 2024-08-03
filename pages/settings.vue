@@ -5,6 +5,4 @@ const loading = ref(false)
 
 <template>
 	<div>hello Settings</div>
-
-
 </template>
