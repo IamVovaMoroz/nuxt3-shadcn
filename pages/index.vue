@@ -1,7 +1,113 @@
 <script setup>
 
 const loading = ref(false)
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+const TabsToday = resolveComponent('TabsToday')
+
+const list = [
+	{
+		"title": "Today",
+		"component": resolveComponent("TabsToday")
+	},
+	{
+		"title": "Week",
+		"component": "<div>Week</div>"
+	},
+	{
+		"title": "Mouth",
+		"component": "<div>Mouth</div>"
+	},
+	{
+		"title": "Year",
+		"component": "<div>Year</div>"
+	}
+
+]
+
+let data = ref([
+			16.0, 18.2, 23.1, 27.9, 32.2, 36.4, 39.8, 38.4, 35.5, 29.2,
+			22.0, 17.8
+		])
+
+let categories = ref({
+	'today': [],
+	'week': [],
+	'month': [],
+	'year': []
+
+})
+
+let currentCategory = ref([
+	'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+	'Oct', 'Nov', 'Dec'
+])
+
+const options = {
+	chart: {
+		type: 'line',
+		animation: {
+			enable: false
+		}
+	},
+	legend:{enable: false},
+	title: {
+		text: ''
+	},
+
+	xAxis: {
+		gridLineColor: 'transparent',
+		categories: currentCategory
+	},
+	yAxis: {
+		gridLineColor: 'transparent',
+		title: {
+			text: ''
+		}
+	},
+	plotOptions: {
+		line: {
+			marker: {
+				enabled: false
+			},
+			dataLabels: {
+				enabled: false
+			},
+			enableMouseTracking: true
+		}
+	},
+	series: [{  //Data
+		name: 'line',
+		lineWidth: '4px',
+		color: {
+			linearGradient: {},
+			// colors from 0 to 1 distance
+			stops: [
+				[0, 'rgba(9252, 176, 69, 1)'],
+				[0.33, 'rgba(253, 29, 29, 1)'],
+				[0.66, 'rgba(131, 58, 180, 1)'],
+				[1, 'rgba(29, 217, 83, 1)']
+			],
+
+		},
+		data: data.value
+	}]
+}
+
+function generateRandomData(numPoints = 12, min = -10, max = 40) {
+  const newData = [];
+  for (let i = 0; i < numPoints; i++) {
+    newData.push(Math.random() * (max - min) + min);
+  }
+  return newData;
+}
+
+onMounted(() => {
+  data.value = generateRandomData();
+  options.series[0].data = data.value;
+});
+
 </script>
 
 <template>
@@ -14,21 +120,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 			<div class="w-[120px] h-[36px] bg-neutral-200"></div>
 		</header>
 		<main class="grid gap-4">
-			<Tabs default-value="account" class="w-[400px]">
-				<TabsList>
-					<TabsTrigger value="account">
-						Account
+			<Tabs default-value="Today" >
+				<TabsList class="max-w-[400px]">
+					<TabsTrigger v-for="item, index in list" :key="index" :value="item.title">
+						{{ item.title }}
 					</TabsTrigger>
-					<TabsTrigger value="password">
-						Password
+					<!-- <TabsTrigger value="today">
+						Today
 					</TabsTrigger>
+					<TabsTrigger value="week">
+						This week
+					</TabsTrigger>
+					<TabsTrigger value="month">
+						This month
+					</TabsTrigger>
+					<TabsTrigger value="year">
+						This year
+					</TabsTrigger> -->
 				</TabsList>
-				<TabsContent value="account">
-					Make changes to your account here.
+
+				<TabsContent v-for="item, index in list" :key="index" :value="item.title">
+					<highchart :options="options" />
+
+					<!-- <component :is="item.component"></component> -->
+					<!-- {{ item.component }} -->
 				</TabsContent>
-				<TabsContent value="password">
-					Change your password here.
-				</TabsContent>
+
+
 			</Tabs>
 		</main>
 
