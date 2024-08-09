@@ -27,9 +27,9 @@ const list = [
 ]
 
 let data = ref([
-			16.0, 18.2, 23.1, 27.9, 32.2, 36.4, 39.8, 38.4, 35.5, 29.2,
-			22.0, 17.8
-		])
+	16.0, 18.2, 23.1, 27.9, 32.2, 36.4, 39.8, 38.4, 35.5, 29.2,
+	22.0, 17.8
+])
 
 let categories = ref({
 	'today': [],
@@ -51,7 +51,7 @@ const options = {
 			enable: false
 		}
 	},
-	legend:{enable: false},
+	legend: { enable: false },
 	title: {
 		text: ''
 	},
@@ -96,16 +96,16 @@ const options = {
 }
 
 function generateRandomData(numPoints = 12, min = -10, max = 40) {
-  const newData = [];
-  for (let i = 0; i < numPoints; i++) {
-    newData.push(Math.random() * (max - min) + min);
-  }
-  return newData;
+	const newData = [];
+	for (let i = 0; i < numPoints; i++) {
+		newData.push(Math.random() * (max - min) + min);
+	}
+	return newData;
 }
 
 onMounted(() => {
-  data.value = generateRandomData();
-  options.series[0].data = data.value;
+	data.value = generateRandomData();
+	options.series[0].data = data.value;
 });
 
 </script>
@@ -120,7 +120,7 @@ onMounted(() => {
 			<div class="w-[120px] h-[36px] bg-neutral-200"></div>
 		</header>
 		<main class="grid gap-4">
-			<Tabs default-value="Today" >
+			<Tabs default-value="Today">
 				<TabsList class="max-w-[400px]">
 					<TabsTrigger v-for="item, index in list" :key="index" :value="item.title">
 						{{ item.title }}
